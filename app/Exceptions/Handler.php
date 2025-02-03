@@ -3,9 +3,6 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\Request; // Подключаем правильный Request
-use Exception;
-use Illuminate\Auth\AuthenticationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -29,26 +26,5 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
-    }
-
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
-     */
-    public function render($request, Throwable $exception)
-    {
-        // Кастомизация ошибки аутентификации
-        if ($exception instanceof AuthenticationException) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Не авторизован или токен неправильный',
-            ], 401);
-        }
-
-        // В случае других ошибок вызываем родительский метод
-        return parent::render($request, $exception);
     }
 }
